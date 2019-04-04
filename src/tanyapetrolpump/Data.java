@@ -1,13 +1,15 @@
 package tanyapetrolpump;
 
+//import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Random;
+
+import tanyapetrolpump.models.FuelType.*;
 //import tanyapetrolpump.models.Vehicle.Car;
 import tanyapetrolpump.models.Transaction.*;
 //import tanyapetrolpump.models.Vehicle.Van;
 import tanyapetrolpump.models.Vehicle.*;
 import tanyapetrolpump.Pump;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public abstract class Data {
 
@@ -42,11 +44,37 @@ public abstract class Data {
 
         String[] plateNumbers = { "DEL", "HYD", "LON", "NYC", "UAE", "THB" };
         String plateNumber = plateNumbers[ rng.nextInt( plateNumbers.length ) ] + " " + String.format( "%3d", rng.nextInt( 1000 ) );
+        String[] vehicleTypes = {"Car", "Van", "HGV"};
+        String vehicleType = vehicleTypes[ rng.nextInt( vehicleTypes.length ) ];
+        String[] fuelTypes = {"Unleaded", "Diesel", "LPG"};
+        String fuelType = fuelTypes[ rng.nextInt( fuelTypes.length ) ];
+        FuelType fuelTypeObject = null;
+        switch(fuelType) {
+            case "Unleaded":
+                fuelTypeObject = new Unleaded();
+                break;
+            case "Diesel":
+                fuelTypeObject = new Diesel();
+                break;
+            case "LPG":
+                fuelTypeObject = new LPG();
+                break;
+        }
         // int fuelLevels = 2;
         Vehicle vehicle = null;
-        vehicle = new Vehicle(plateNumber);
+        switch ( vehicleType )
+        {
+            case "Car":
+                vehicle = new Car( plateNumber, fuelTypeObject );
+                break;
+            case "Van":
+                vehicle = new Van( plateNumber, fuelTypeObject );
+                break;
+            case "HGV":
+                vehicle = new HGV( plateNumber, fuelTypeObject );
+                break;
+        }
         queue.add(vehicle);
-
     }
 
     /*

@@ -6,12 +6,12 @@ import tanyapetrolpump.models.FuelType.*;
  *
  * @author Tanya Jain <https://tanya-jain.xyz>
  */
-public class Car extends Vehicle {
+public class Van extends Vehicle {
   //private String plateNumber;
-  public Car( String plateNumber, FuelType vehicleFuelType )
+  public Van( String plateNumber, FuelType vehicleFuelType )
   {
-      super(plateNumber);
-      super.setType("Car");
+      super( plateNumber);
+      super.setType("Van");
       super.setVehicleFuelType(vehicleFuelType);
   }
 }

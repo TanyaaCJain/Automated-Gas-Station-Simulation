@@ -6,8 +6,13 @@
 package tanyapetrolpump;
 
 import javax.swing.*;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 import tanyapetrolpump.GUI.*;
 import tanyapetrolpump.Pump;
+
+
 //import java.util.Timer;
 /**
  *
@@ -19,32 +24,39 @@ public class TanyaPetrolPump {
    * @param args the command line arguments
    */
 
+  // Vehicle Creation delay
+  // public int delay = Config.VEHICLE_GENERATION_TIMER_DELAY +
+  // random_delay.nextInt( 700 );
+
   // Timers
   private static Timer vehicleAdditionTimer;
   private static Timer checkQueueTimer;
   private static Timer drawUITimer;
 
-  //public static void vehicleArrives( Vehicle vehicleArrivedOnStation ) {
-    //Lane temporaryLane = new Lane;
-    //temporaryLane.sendToLane( vehicleArrivedOnStation );
-  //}
+  private static final Random random_delay = new Random();
+
+  // public static void vehicleArrives( Vehicle vehicleArrivedOnStation ) {
+  // Lane temporaryLane = new Lane;
+  // temporaryLane.sendToLane( vehicleArrivedOnStation );
+  // }
 
   private static Pump[][] gasStationMap;
-  
-  //has to be done in constructor
-  public TanyaPetrolPump(int numberOfLanes, int numberOfPumps){
-      gasStationMap = new Pump[numberOfLanes][numberOfPumps];   
+
+  // has to be done in constructor
+  public TanyaPetrolPump(int numberOfLanes, int numberOfPumps) {
+    gasStationMap = new Pump[numberOfLanes][numberOfPumps];
   }
 
   public static Pump[][] getGasStationMap() {
     return gasStationMap;
   }
 
-  public void initGasStationMap(){
-    for(int lane=0; lane < gasStationMap.length; lane++)
-      for(int pump=0; pump < gasStationMap[0].length; pump++)
-          gasStationMap[lane][pump] = new Pump();
+  public void initGasStationMap() {
+    for (int lane = 0; lane < gasStationMap.length; lane++)
+      for (int pump = 0; pump < gasStationMap[0].length; pump++)
+        gasStationMap[lane][pump] = new Pump();
   }
+
   public static void main(String[] args) {
 
     // The main variable of Gas Station to form the 3 lanes, each containing 3 pumps
@@ -52,21 +64,44 @@ public class TanyaPetrolPump {
     gasStation.initGasStationMap();
 
     // Creation of 3 lanes in the gas station
-    //Lane stationlanes = new Lane[3];
-    
+    // Lane stationlanes = new Lane[3];
+
     startQueue();
     startCheckQueue(gasStationMap);
     startDrawUI();
-    
+
     JFrame frame = new JFrame();
-    frame.setVisible( true );
+    frame.setVisible(true);
 
   }
 
-  private static void startQueue( )
-  {
-    vehicleAdditionTimer = new Timer( Config.VEHICLE_GENERATION_TIMER_DELAY, e -> Data.generateVehicle());
+  private static void startQueue() {
+    // while(true) {
+    // int delay = Config.VEHICLE_GENERATION_TIMER_DELAY + random_delay.nextInt( 700
+    // );
+    // vehicleAdditionTimer = new Timer( delay, e -> Data.generateVehicle());
+    vehicleAdditionTimer = new Timer( Config.VEHICLE_GENERATION_TIMER_DELAY, e -> {
+      Data.generateVehicle();
+      int randomInt = random_delay.nextInt(700);
+      try {
+        TimeUnit.MILLISECONDS.sleep(randomInt);
+      } catch (InterruptedException e_delay) {
+        // Auto-generated catch block
+        e_delay.printStackTrace();
+      } 
+    } );
     vehicleAdditionTimer.start();
+    // vehicleAdditionTimer.schedule(new TimerTask(){
+    // @Override
+    // public void run(){
+
+    //Data.generateVehicle();
+    
+      //}
+    //}, 0, Config.getVehicleCreationDelay());
+    //int totaldelay = Config.VEHICLE_GENERATION_TIMER_DELAY + randomInt;
+    //System.out.println("delay in vehicle creation is: " + totaldelay + " ms");
+    //  vehicleAdditionTimer.setRepeats(false); 
   }
   
   private static void startCheckQueue(Pump gasStationMap[][])

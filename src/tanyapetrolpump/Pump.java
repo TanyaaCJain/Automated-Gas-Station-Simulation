@@ -2,9 +2,14 @@ package tanyapetrolpump;
 
 import javax.swing.Timer;
 
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import tanyapetrolpump.models.FuelType.FuelType;
 //import tanyapetrolpump.models.Price;
 import tanyapetrolpump.models.Transaction.*;
 import tanyapetrolpump.models.Vehicle.*;
+
 
 public class Pump
 {
@@ -15,6 +20,8 @@ public class Pump
     int pumpNumber;
     //int pumpNumber[] = new int[2];
     */
+    private static final Random random_delay = new Random();
+
     boolean pumpUsage;
 
     public Pump() {
@@ -91,6 +98,13 @@ public class Pump
             Config.NUMBER_OF_VEHICLES_FUELLED++;
             setPumpUsage(false);
             generateTransaction( vehicle , litresDispensed );
+            int randomInt = random_delay.nextInt(2000);
+            try {
+                TimeUnit.MILLISECONDS.sleep(randomInt);
+            } catch (InterruptedException e_delay) {
+                // Auto-generated catch block
+                e_delay.printStackTrace();
+            }
         } );
         timer.setRepeats( false ); // one time timer
         timer.start();
@@ -122,8 +136,18 @@ public class Pump
         transaction.setCost( cost );
         transaction.setVehicle( vehicle );
         transaction.setLitresDispensed( litresDispensed );
-        
-        Config.TOTAL_LITRES_DISPENSED += litresDispensed;
+        FuelType fuelType = vehicle.getVehicleFuelType();
+        switch(fuelType.getType()) {
+            case "Unleaded":
+                Config.TOTAL_UNLEADED_LITRES_DISPENSED += litresDispensed;
+                break;
+            case "Diesel":
+                Config.TOTAL_DIESEL_LITRES_DISPENSED += litresDispensed;
+                break;
+            case "LPG":
+                Config.TOTAL_LPG_LITRES_DISPENSED += litresDispensed;
+                break;
+        }
         Config.AMOUNT_EQUIVALENCE_TO_LITRES_DISPENSED += cost;
         Config.COMMISSION_EARNED_BY_EMPLOYEE += 0.01 * litresDispensed;
 

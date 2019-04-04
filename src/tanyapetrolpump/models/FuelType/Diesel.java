@@ -9,9 +9,9 @@ package tanyapetrolpump.models.FuelType;
  *
  * @author Tanya Jain <https://tanya-jain.xyz>
  */
-public class Unleaded extends FuelType {
-    public Unleaded()
+public class Diesel extends FuelType {
+    public Diesel()
     {
-        super( "Unleaded" );
+        super( "Diesel" );
     }
 }

@@ -1,6 +1,6 @@
 package tanyapetrolpump.GUI;
 
-import java.util.*; 
+//import java.util.*; 
 import java.util.ArrayList;
 
 import tanyapetrolpump.Config;
@@ -85,7 +85,9 @@ public abstract class MainWindow
     }
     
     private static void drawGlobalInformation() {
-        System.out.println( "Total Litres Dispensed: " + Config.TOTAL_LITRES_DISPENSED );
+        System.out.println( "Total Unleaded Litres Dispensed: " + Config.TOTAL_UNLEADED_LITRES_DISPENSED );
+        System.out.println( "Total Diesel Litres Dispensed: " + Config.TOTAL_DIESEL_LITRES_DISPENSED );
+        System.out.println( "Total LPG Litres Dispensed: " + Config.TOTAL_LPG_LITRES_DISPENSED );
         System.out.println( "Amount of Money the Litres Dispensed Equate to: £" + Config.AMOUNT_EQUIVALENCE_TO_LITRES_DISPENSED );
         System.out.println( "Commission Earned by Employee: £" + Config.COMMISSION_EARNED_BY_EMPLOYEE );
         System.out.println( "Number of Vehicles Fuelled: " + Config.NUMBER_OF_VEHICLES_FUELLED );

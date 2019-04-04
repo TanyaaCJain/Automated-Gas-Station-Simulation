@@ -5,6 +5,12 @@
  */
 package tanyapetrolpump.models.Vehicle;
 
+import javax.swing.*;
+
+import tanyapetrolpump.Config;
+import tanyapetrolpump.Data;
+import tanyapetrolpump.models.FuelType.*;
+
 /**
  *
  * @author Tanya Jain <https://tanya-jain.xyz>
@@ -15,17 +21,23 @@ public class Vehicle {
     //private int fuelLevel;
     private String plateNumber;
     private String type;
-    
-    public Vehicle( String plateNumber )
-    {
-        //this.fuelLevel = fuelLevel;
-        this.plateNumber = plateNumber;
-        this.type = "Car";
-    }
-    
-    /**
-     * @return the plateNumber
-     */
+    private Timer makeVehicleWait;
+    private FuelType vehicleFuelType;
+
+  public Vehicle(String plateNumber) {
+    // this.fuelLevel = fuelLevel;
+    this.setPlateNumber(plateNumber);
+    this.makeVehicleWait = new Timer(Config.VEHICLE_WAITING_TIME, e -> {
+      if (Data.queue.contains(this))
+        Data.queue.remove(this);
+    });
+    this.makeVehicleWait.setRepeats(false);
+  }
+
+
+  /**
+   * @return the plateNumber
+   */
     public String getPlateNumber() {
       return plateNumber;
     }
@@ -48,7 +60,22 @@ public class Vehicle {
      */
     public void setType(String type) {
       this.type = type;
+    }  
+  
+    /**
+     * @return the vehicleFuelType
+     */
+    public FuelType getVehicleFuelType() {
+      return vehicleFuelType;
     }
+
+    /**
+     * @param vehicleFuelType the vehicleFuelType to set
+     */
+    public void setVehicleFuelType(FuelType vehicleFuelType) {
+      this.vehicleFuelType = vehicleFuelType;
+    }
+
     /*
     public int getFuelLevel( )
     {
@@ -58,7 +85,7 @@ public class Vehicle {
     @Override
     public String toString()
     {
-        return "Type: " + getType() + " | PN: " + getPlateNumber();
+        return "Type: " + getType() + " | PN: " + getPlateNumber() + " | Fuel: " + getVehicleFuelType().getType();
     }
     /*
     public String getClassName( )
