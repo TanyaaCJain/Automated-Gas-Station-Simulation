@@ -53,7 +53,7 @@ public class Transaction
     @Override
     public String toString()
     {
-        return "Cost: £" + getCost() + " | Vehicle PN: " + 
+        return "Cost: £" + getCost() + " | " + getVehicle().getType() + " PN: " + 
                getVehicle().getPlateNumber() + " | Litres Dispensed: " + 
                getLitresDispensed() + "L";
     }

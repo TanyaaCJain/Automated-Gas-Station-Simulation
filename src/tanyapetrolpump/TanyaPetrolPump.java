@@ -24,21 +24,12 @@ public class TanyaPetrolPump {
    * @param args the command line arguments
    */
 
-  // Vehicle Creation delay
-  // public int delay = Config.VEHICLE_GENERATION_TIMER_DELAY +
-  // random_delay.nextInt( 700 );
-
   // Timers
   private static Timer vehicleAdditionTimer;
   private static Timer checkQueueTimer;
   private static Timer drawUITimer;
 
   private static final Random random_delay = new Random();
-
-  // public static void vehicleArrives( Vehicle vehicleArrivedOnStation ) {
-  // Lane temporaryLane = new Lane;
-  // temporaryLane.sendToLane( vehicleArrivedOnStation );
-  // }
 
   private static Pump[][] gasStationMap;
 
@@ -63,9 +54,6 @@ public class TanyaPetrolPump {
     TanyaPetrolPump gasStation = new TanyaPetrolPump(3, 3);
     gasStation.initGasStationMap();
 
-    // Creation of 3 lanes in the gas station
-    // Lane stationlanes = new Lane[3];
-
     startQueue();
     startCheckQueue(gasStationMap);
     startDrawUI();
@@ -76,10 +64,6 @@ public class TanyaPetrolPump {
   }
 
   private static void startQueue() {
-    // while(true) {
-    // int delay = Config.VEHICLE_GENERATION_TIMER_DELAY + random_delay.nextInt( 700
-    // );
-    // vehicleAdditionTimer = new Timer( delay, e -> Data.generateVehicle());
     vehicleAdditionTimer = new Timer( Config.VEHICLE_GENERATION_TIMER_DELAY, e -> {
       Data.generateVehicle();
       int randomInt = random_delay.nextInt(700);
@@ -91,17 +75,6 @@ public class TanyaPetrolPump {
       } 
     } );
     vehicleAdditionTimer.start();
-    // vehicleAdditionTimer.schedule(new TimerTask(){
-    // @Override
-    // public void run(){
-
-    //Data.generateVehicle();
-    
-      //}
-    //}, 0, Config.getVehicleCreationDelay());
-    //int totaldelay = Config.VEHICLE_GENERATION_TIMER_DELAY + randomInt;
-    //System.out.println("delay in vehicle creation is: " + totaldelay + " ms");
-    //  vehicleAdditionTimer.setRepeats(false); 
   }
   
   private static void startCheckQueue(Pump gasStationMap[][])

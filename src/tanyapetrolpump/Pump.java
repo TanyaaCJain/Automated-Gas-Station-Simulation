@@ -2,7 +2,7 @@ package tanyapetrolpump;
 
 import javax.swing.Timer;
 
-import java.util.Random;
+//import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import tanyapetrolpump.models.FuelType.FuelType;
@@ -13,59 +13,12 @@ import tanyapetrolpump.models.Vehicle.*;
 
 public class Pump
 {
-    /*
-    private static int laneId = 0;
-    private static int pumpId = 0;
-    int laneNumber;
-    int pumpNumber;
-    //int pumpNumber[] = new int[2];
-    */
-    private static final Random random_delay = new Random();
-
-    boolean pumpUsage;
+    private boolean pumpUsage;
 
     public Pump() {
-        /*
-        if(pumpId % 2 == 0 && pumpId > 0) 
-        {
-            this.laneNumber = ++laneId;
-            this.pumpNumber = 0;
-        }
-        else 
-        {
-            this.laneNumber = laneId;
-            this.pumpNumber = pumpId++;
-        }
-        */
         this.pumpUsage = false;
     }
-    /**
-	 * @return the laneNumber
-	 */
-	//public int getLaneNumber() {
-	//	return laneNumber;
-	//}
-
-    /**
-     * @param laneNumber the laneNumber to set
-     */
-    //public void setLaneNumber(int laneNumber) {
-    //    this.laneNumber = laneNumber;
-    //}
-
-    /**
-     * @return the pumpNumber
-     */
-    //public int getPumpNumber() {
-    //    return pumpNumber;
-    //}
-
-    /**
-     * @param pumpNumber the pumpNumber to set
-     */
-    //public void setPumpNumber(int pumpNumber) {
-    //    this.pumpNumber = pumpNumber;
-    //}
+    
     public boolean getPumpUsage() {
         return pumpUsage;
     }
@@ -74,31 +27,22 @@ public class Pump
         this.pumpUsage = pumpUsage;
     }
 
-    //public String toString( )
-    //{
-    //    return getLaneNumber() + getPumpNumber() + " " + getPumpUsage();
-    //}
-
     public void FuelVehicle( Vehicle vehicle )
     {
         Data.atPumpVehicles.add( vehicle );
         setPumpUsage(true);
-        //int fuelInTank = vehicle.getFuelLevel();
-        //int fuelTankCapacity = vehicle.getFuelTankCapacity();
-        //int fuelInLitresToRefill = fuelTankCapacity - fuelInTank;
         //int delay = fuelInLitresToRefill * Config.FUELLING_DURATION;
-
         //int delay = vehicle.getDirtinessLevel() * 300;
-        
-        double litresDispensed = Config.FUELLING_DURATION * Config.DISPENSING_CAPABILITY;
-
-        Timer timer = new Timer( Config.FUELLING_DURATION, e -> {
+        //double litresDispensed = Config.FUELLING_DURATION * Config.DISPENSING_CAPABILITY;
+        int litresDispensed = vehicle.getFuelTankCapacity() - vehicle.getFuelLevel();
+        int fuellingDuration =  (int)(litresDispensed / Config.DISPENSING_CAPABILITY);
+        Timer fuellingTimer = new Timer( fuellingDuration, e -> {
             Data.fuelledVehicles.add( vehicle );
             Data.atPumpVehicles.remove( vehicle );
             Config.NUMBER_OF_VEHICLES_FUELLED++;
             setPumpUsage(false);
             generateTransaction( vehicle , litresDispensed );
-            int randomInt = random_delay.nextInt(2000);
+            int randomInt = Config.random_delay.nextInt(2000);
             try {
                 TimeUnit.MILLISECONDS.sleep(randomInt);
             } catch (InterruptedException e_delay) {
@@ -106,8 +50,8 @@ public class Pump
                 e_delay.printStackTrace();
             }
         } );
-        timer.setRepeats( false ); // one time timer
-        timer.start();
+        fuellingTimer.setRepeats( false ); // one time timer
+        fuellingTimer.start();
     }
 
     private static void generateTransaction( Vehicle vehicle, double litresDispensed )
@@ -115,8 +59,7 @@ public class Pump
         Transaction transaction = new Transaction();
         
         // container for final transaction cost
-        double cost = 0;
-        
+        double cost = litresDispensed * Config.COST_OF_FUEL_PER_LITRE;
         // generate transaction
         /*
         switch ( vehicle.getClassName() )
@@ -128,10 +71,7 @@ public class Pump
                 cost = Price.VAN.getPriceLevel();
                 break;
         }*/
-        
-        //cost *= vehicle.getDirtinessLevel();
-        cost = litresDispensed * Config.COST_OF_FUEL_PER_LITRE;
-
+             
         // final cost based on dirtiness level
         transaction.setCost( cost );
         transaction.setVehicle( vehicle );

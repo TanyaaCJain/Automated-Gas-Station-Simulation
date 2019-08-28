@@ -10,7 +10,7 @@ public class Van extends Vehicle {
   //private String plateNumber;
   public Van( String plateNumber, FuelType vehicleFuelType )
   {
-      super( plateNumber);
+      super(plateNumber, 80);
       super.setType("Van");
       super.setVehicleFuelType(vehicleFuelType);
   }

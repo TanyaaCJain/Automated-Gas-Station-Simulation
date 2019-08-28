@@ -18,20 +18,27 @@ import tanyapetrolpump.models.FuelType.*;
 public class Vehicle {
   //public static final int MAX_FUEL_LEVEL = 10;
     
-    //private int fuelLevel;
+    private int fuelLevel;
     private String plateNumber;
     private String type;
+    private int vehicleWaitTime;
     private Timer makeVehicleWait;
     private FuelType vehicleFuelType;
+    private int fuelTankCapacity;
 
-  public Vehicle(String plateNumber) {
-    // this.fuelLevel = fuelLevel;
+  public Vehicle(String plateNumber, int fuelTankCapacity) {
+    this.setFuelTankCapacity(fuelTankCapacity);
+    this.setFuelLevel();
     this.setPlateNumber(plateNumber);
-    this.makeVehicleWait = new Timer(Config.VEHICLE_WAITING_TIME, e -> {
-      if (Data.queue.contains(this))
+    this.setVehicleWaitTime();
+    this.makeVehicleWait = new Timer(this.vehicleWaitTime, e -> {
+      if (Data.queue.contains(this)) {
         Data.queue.remove(this);
+        Config.NUMBER_OF_VEHICLES_LEFT_WITHOUT_FUELLING ++;
+      }
     });
     this.makeVehicleWait.setRepeats(false);
+    this.makeVehicleWait.start();
   }
 
 
@@ -76,12 +83,20 @@ public class Vehicle {
       this.vehicleFuelType = vehicleFuelType;
     }
 
-    /*
+    /**
+     * @return the fuelLevel
+     */
     public int getFuelLevel( )
     {
         return fuelLevel;
     }
-    */
+    /**
+     * @param fuelLevel the fuelLevel to set
+     */
+    public void setFuelLevel() {
+      this.fuelLevel = Config.random_delay.nextInt(this.fuelTankCapacity / 4);
+    }
+    
     @Override
     public String toString()
     {
@@ -102,6 +117,55 @@ public class Vehicle {
         // finally, return the result
         return className;
     }*/
+
+  /**
+   * @return the makeVehicleWait
+   */
+  public Timer getMakeVehicleWait() {
+    return makeVehicleWait;
+  }
+
+  /**
+   * @param makeVehicleWait the makeVehicleWait to set
+   */
+  public void setMakeVehicleWait(Timer makeVehicleWait) {
+    this.makeVehicleWait = makeVehicleWait;
+  }
+
+  /**
+   * @return the fuelTankCapacity
+   */
+  public int getFuelTankCapacity() {
+    return fuelTankCapacity;
+  }
+
+  /**
+   * @param fuelTankCapacity the fuelTankCapacity to set
+   */
+  public void setFuelTankCapacity(int fuelTankCapacity) {
+    this.fuelTankCapacity = fuelTankCapacity;
+  }
+
+  /**
+   * @param fuelLevel the fuelLevel to set
+   */
+  public void setFuelLevel(int fuelLevel) {
+    this.fuelLevel = fuelLevel;
+  }
+
+  /**
+   * @return the vehicleWaitTime
+   */
+  public int getVehicleWaitTime() {
+    return vehicleWaitTime;
+  }
+
+  /**
+   * @param vehicleWaitTime the vehicleWaitTime to set
+   */
+  public void setVehicleWaitTime() {
+    this.vehicleWaitTime = Config.VEHICLE_WAITING_TIME + Config.random_delay.nextInt(1000);
+  }
 
 	
 }

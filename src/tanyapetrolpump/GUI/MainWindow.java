@@ -19,25 +19,17 @@ public abstract class MainWindow
     public static void drawUI( )
     {
         clearScreen();
-        drawGlobalInformation();
-        System.out.println( "\n\n" );
         drawQueue();
-        System.out.println( "\n\n" );
+        System.out.println( "\n" );
         drawStation( TanyaPetrolPump.getGasStationMap() );
-        System.out.println( "\n\n" );
+        drawGlobalInformation();
+        System.out.println( "\n" );
         drawInServiceVehicles();
-        System.out.println( "\n\n" );
+        System.out.println( "\n" );
         drawServicedVehicles();
-        System.out.println( "\n\n" );
+        System.out.println( "\n" );
         drawTransactions();
     }
-    
-/*
-    private static void repeatString( String stringToRepeat, int timesToRepeat) {
-        for(int counter=0; counter < timesToRepeat ; counter++) 
-	        System.out.println( stringToRepeat );
-    }*/
-    
 
    
     private static void drawStation( Pump[][] stationToDraw ) 
@@ -50,51 +42,46 @@ public abstract class MainWindow
         String pumpAvailString = "";
         for( int lane = 0; lane < 3; lane++ )
         {
-            //System.out.print( "* Lane " + lane+1 + " " ); //10 characters long
             laneNumberToPrint = lane + 1;
             laneAvailString = "* Lane " + laneNumberToPrint + " ";
             for( int pump = 0; pump < 3; pump++, pumpIdToPrint++)
             {
-                //repeatString( "*", 5);
                 laneAvailString = laneAvailString + "*****";
-                //System.out.print( stationToDraw[lane][pump].getPumpUsage() );
                 if( !stationToDraw[lane][pump].getPumpUsage() )
                     pumpAvailString = ANSI_GREEN_BG + ANSI_WHITE + " " + pumpIdToPrint + "  AVAIL " + ANSI_RESET;
                 else
                     pumpAvailString = ANSI_RED_BG + ANSI_WHITE + " " + pumpIdToPrint + "  BUSY  " + ANSI_RESET; 
-                //System.out.println( pumpAvailString ); //10 characters long
                 laneAvailString = laneAvailString + pumpAvailString;
                 laneAvailString = laneAvailString + "*****";
-                
-                //repeatString( "*", 5);
             }
             System.out.println( laneAvailString );
             laneAvailString = "*";
-            //for (int spacecounter=0; spacecounter < 10; spacecounter++ )
-            //    laneAvailString += " ";
             for (int starcounter=0; starcounter < 68; starcounter++ )
                 laneAvailString += "*";    
-            //String.join( laneAvailString, Collections.nCopies(10, " "));
-            //String.join( laneAvailString, Collections.nCopies(60, "*"));
             System.out.println( laneAvailString );
             laneAvailString = "";
-            //repeatString( " ", 10); 
-            //repeatString( "*", 60);
-            //System.out.print( '\n' );
         }
     }
     
     private static void drawGlobalInformation() {
-        System.out.println( "Total Unleaded Litres Dispensed: " + Config.TOTAL_UNLEADED_LITRES_DISPENSED );
-        System.out.println( "Total Diesel Litres Dispensed: " + Config.TOTAL_DIESEL_LITRES_DISPENSED );
-        System.out.println( "Total LPG Litres Dispensed: " + Config.TOTAL_LPG_LITRES_DISPENSED );
+        
+        String litresDispensedString1 = "* Total Litres Dispensed *****";
+        litresDispensedString1 += ANSI_GREEN_BG + " Unleaded: " + Config.TOTAL_UNLEADED_LITRES_DISPENSED + "L " + ANSI_RESET + "****";
+        litresDispensedString1 += ANSI_GREEN_BG + " Diesel: " + Config.TOTAL_DIESEL_LITRES_DISPENSED + "L " + ANSI_RESET + "****";
+        litresDispensedString1 += ANSI_GREEN_BG + " LPG: " + Config.TOTAL_LPG_LITRES_DISPENSED + "L " + ANSI_RESET + "****";
+        System.out.println("\n");  
+        System.out.println(litresDispensedString1);
+        System.out.println("\n");  
+        //System.out.println( "Total Unleaded Litres Dispensed: " + Config.TOTAL_UNLEADED_LITRES_DISPENSED + "L");
+        //System.out.println( "Total Diesel Litres Dispensed: " + Config.TOTAL_DIESEL_LITRES_DISPENSED + "L");
+        //System.out.println( "Total LPG Litres Dispensed: " + Config.TOTAL_LPG_LITRES_DISPENSED + "L");
         System.out.println( "Amount of Money the Litres Dispensed Equate to: £" + Config.AMOUNT_EQUIVALENCE_TO_LITRES_DISPENSED );
         System.out.println( "Commission Earned by Employee: £" + Config.COMMISSION_EARNED_BY_EMPLOYEE );
         System.out.println( "Number of Vehicles Fuelled: " + Config.NUMBER_OF_VEHICLES_FUELLED );
-        //System.out.println( "Number of Vehicles Left Without Fuelling:" + Config.TOTAL_LITRES_DISPENSED );
+        System.out.println( "Number of Vehicles Left Without Fuelling:" + Config.NUMBER_OF_VEHICLES_LEFT_WITHOUT_FUELLING );
     }
 
-    private static void drawQueue() {
+    public static void drawQueue() {
         System.out.println( "Queue:" );
         drawList( Data.queue, Config.QUEUE_MAX_VEHICLES );
     }
@@ -146,31 +133,3 @@ public abstract class MainWindow
         }
     }
 }
-
-
-/*
-
-import javax.swing.*;
-
-public class MainWindow extends JFrame
-{
-    public MainWindow( )
-    {
-        JFrame frame = new JFrame();
-
-        window.setSize( 600, 600 ); //paremeters::width,height
-        window.setSize( new Dimension ( 600, 600 ));
-
-
-        frame.setVisible( true );
-        // make the window full screen
-        //GUIToolkit.makeFrameFullScreen( this );
-        
-        // close the app once this window is closed
-        //setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        
-        // show this window
-        //setVisible( true );
-    }
-}
-*/
